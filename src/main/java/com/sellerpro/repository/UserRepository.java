@@ -3,6 +3,7 @@ package com.sellerpro.repository;
 import com.sellerpro.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -30,4 +31,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.createdAt >= :since")
     Long countNewUsersSince(LocalDateTime since);
+
+    @Query("SELECT u.email FROM User u JOIN u.subscriptions s JOIN s.plan p " +
+           "WHERE p.name = :planName AND s.status = 'ACTIVE' AND s.endDate >= CURRENT_DATE " +
+           "AND p.whatsappDigest = true")
+    List<String> findEmailsByPlanAndWhatsappEnabled(@Param("planName") String planName);
+
+    @Query("SELECT u.phone FROM User u WHERE u.email = :email")
+    String findPhoneByEmail(@Param("email") String email);
+
+    @Query("SELECT p.name FROM User u JOIN u.subscriptions s JOIN s.plan p " +
+           "WHERE u.email = :email AND s.status = 'ACTIVE' AND s.endDate >= CURRENT_DATE")
+    String findPlanByEmail(@Param("email") String email);
 }

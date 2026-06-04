@@ -16,7 +16,7 @@ public class ChannelCompareService {
 
     public List<Map<String, Object>> getChannelComparison(String email, int months) {
         LocalDate from = LocalDate.now().minusMonths(months);
-        List<Object[]> data = orderRepository.findChannelStats(email, from);
+        List<Object[]> data = orderRepository.findChannelStats(email, from, LocalDate.now());
 
         return data.stream().map(row -> {
             Map<String, Object> entry = new LinkedHashMap<>();
@@ -31,6 +31,7 @@ public class ChannelCompareService {
     }
 
     public String getTopPlatform(String email) {
-        return orderRepository.findTopPlatformByRevenue(email);
+        List<String> platforms = orderRepository.findTopPlatformByRevenue(email);
+        return (platforms != null && !platforms.isEmpty()) ? platforms.get(0) : null;
     }
 }

@@ -70,7 +70,10 @@ public class AlertService {
     private double getCurrentMetricValue(String email, String metric) {
         return switch (metric) {
             case "DAILY_ORDERS" -> orderRepository.countTodayOrders(email);
-            case "DAILY_REVENUE" -> orderRepository.sumTodayRevenue(email);
+            case "DAILY_REVENUE" -> {
+                java.math.BigDecimal rev = orderRepository.sumTodayRevenue(email);
+                yield rev != null ? rev.doubleValue() : 0.0;
+            }
             case "RETURN_RATE" -> orderRepository.calcReturnRate(email);
             default -> 0.0;
         };
