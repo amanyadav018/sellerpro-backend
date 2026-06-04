@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: false
+  flyway:
+    enabled: true
+
+logging:
+  level:
+    com.sellerpro: INFO
+    org.springframework: WARN
+
+server:
+  error:
+    include-message: never
+    include-stacktrace: never
