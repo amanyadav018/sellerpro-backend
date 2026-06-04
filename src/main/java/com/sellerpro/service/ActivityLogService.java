@@ -18,11 +18,10 @@ public class ActivityLogService {
     public void log(Long userId, String action, String entityType, Long entityId,
                     Map<String, Object> details, String ipAddress) {
         ActivityLog log = ActivityLog.builder()
-            .userId(userId)
             .action(action)
             .entityType(entityType)
-            .entityId(entityId)
-            .details(details)
+            .entityId(entityId != null ? entityId.toString() : null)
+            .metadata(details)
             .ipAddress(ipAddress)
             .build();
         activityLogRepository.save(log);

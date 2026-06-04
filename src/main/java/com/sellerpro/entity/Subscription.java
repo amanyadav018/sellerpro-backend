@@ -39,6 +39,10 @@ public class Subscription {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    @Column(name = "is_trial", nullable = false)
+    @Builder.Default
+    private Boolean trial = false;
+
     @Column(name = "auto_renew", nullable = false)
     @Builder.Default
     private Boolean autoRenew = false;
@@ -88,5 +92,9 @@ public class Subscription {
 
     public long getDaysRemaining() {
         return LocalDate.now().until(endDate).getDays();
+    }
+
+    public boolean isTrial() {
+        return Boolean.TRUE.equals(trial);
     }
 }

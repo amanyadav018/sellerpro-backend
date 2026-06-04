@@ -17,6 +17,10 @@ import java.util.List;
 @Builder
 public class Plan {
 
+    public enum PlanName {
+        BASIC, STANDARD, PROFESSIONAL, ENTERPRISE, ADMIN
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +39,7 @@ public class Plan {
     private Integer durationMonths = 1;
 
     @Column(name = "max_months_history")
-    private Integer maxMonthsHistory; // null = unlimited
+    private Integer maxMonthsHistory;
 
     @Column(name = "max_platforms", nullable = false)
     @Builder.Default
@@ -64,6 +68,10 @@ public class Plan {
     @Column(name = "referral_program", nullable = false)
     @Builder.Default
     private Boolean referralProgram = false;
+
+    @Column(name = "seller_score", nullable = false)
+    @Builder.Default
+    private Boolean sellerScore = false;
 
     @Column(name = "is_active", nullable = false)
     @Builder.Default
@@ -98,5 +106,34 @@ public class Plan {
 
     public boolean isUnlimitedHistory() {
         return maxMonthsHistory == null;
+    }
+
+    // Convenience alias used in some controllers
+    public List<String> getAllowedPlatformList() {
+        return allowedPlatforms;
+    }
+
+    public boolean isGstReportV2() {
+        return Boolean.TRUE.equals(gstReportV2);
+    }
+
+    public boolean isSellerScore() {
+        return Boolean.TRUE.equals(sellerScore);
+    }
+
+    public boolean isAnalyticsAccess() {
+        return Boolean.TRUE.equals(analyticsAccess);
+    }
+
+    public boolean isWhatsappDigest() {
+        return Boolean.TRUE.equals(whatsappDigest);
+    }
+
+    public boolean isSmartAlerts() {
+        return Boolean.TRUE.equals(smartAlerts);
+    }
+
+    public boolean isReferralProgram() {
+        return Boolean.TRUE.equals(referralProgram);
     }
 }
