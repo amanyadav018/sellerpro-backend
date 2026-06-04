@@ -89,6 +89,10 @@ public class AuthService {
         userService.verifyEmail(token);
     }
 
+    public boolean emailExists(String email) {
+        return userService.emailExists(email);
+    }
+
     private AuthResponse buildAuthResponse(User user, String token) {
         Subscription activeSub = userService.getActiveSubscription(user.getId());
         Optional<Client> client = clientRepository.findByUserId(user.getId());
