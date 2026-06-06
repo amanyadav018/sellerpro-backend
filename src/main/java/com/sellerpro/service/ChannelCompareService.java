@@ -1,5 +1,7 @@
-package com.sellerpro.service;
 
+package com.sellerpro.service;
+import java.time.LocalDate;
+import java.util.List;
 import com.sellerpro.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class ChannelCompareService {
     }
 
     public String getTopPlatform(String email) {
-        return orderRepository.findTopPlatformByRevenue(email);
+       List<Object[]> top = orderRepository.getPlatformBreakdown(1L, LocalDate.now().minusMonths(1), LocalDate.now());
+if (top.isEmpty()) return "N/A";
+return (String) top.get(0)[0];
     }
 }
