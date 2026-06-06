@@ -13,13 +13,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
-
     boolean existsByEmail(String email);
-
     Optional<User> findByEmailVerificationToken(String token);
-
     Optional<User> findByPasswordResetToken(String token);
-
     List<User> findByRole(User.Role role);
 
     @Query("SELECT u FROM User u WHERE u.isActive = true ORDER BY u.createdAt DESC")
@@ -30,4 +26,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT COUNT(u) FROM User u WHERE u.createdAt >= :since")
     Long countNewUsersSince(LocalDateTime since);
+
+    @Query("SELECT u.email FROM User u WHERE u.isActive = true")
+    List<String> findEmailsByPlanAndWhatsappEnabled(String plan);
+
+    @Query("SELECT u.phoneNumber FROM User u WHERE u.email = :email")
+    String findPhoneByEmail(String email);
+
+    @Query("SELECT u.role FROM User u WHERE u.email = :email")
+    String findPlanByEmail(String email);
 }

@@ -1,3 +1,4 @@
+
 package com.sellerpro.service;
 
 import com.sellerpro.model.AlertRule;
@@ -6,9 +7,10 @@ import com.sellerpro.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
-
+import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class AlertService {
@@ -70,7 +72,7 @@ public class AlertService {
     private double getCurrentMetricValue(String email, String metric) {
         return switch (metric) {
             case "DAILY_ORDERS" -> orderRepository.countTodayOrders(email);
-            case "DAILY_REVENUE" -> orderRepository.sumTodayRevenue(email);
+            case "DAILY_REVENUE" -> { BigDecimal rev = orderRepository.sumTodayRevenue(email); yield rev != null ? rev.doubleValue() : 0.0; }
             case "RETURN_RATE" -> orderRepository.calcReturnRate(email);
             default -> 0.0;
         };

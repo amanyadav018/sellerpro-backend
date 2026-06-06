@@ -29,7 +29,7 @@ public class PlanController {
     @GetMapping("/public")
     public ResponseEntity<List<Plan>> getPublicPlans() {
         List<Plan> plans = planRepository.findByActiveTrue().stream()
-            .filter(p -> p.getName() != Plan.PlanName.ADMIN)
+           .filter(p -> !Plan.PlanName.ADMIN.equals(p.getName()))
             .toList();
         return ResponseEntity.ok(plans);
     }
